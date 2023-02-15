@@ -9,3 +9,6 @@ bin
 *.cht
 *.png
 *.bso.txt
+.DS_Store
+*.dbg
+data/
