@@ -7,7 +7,7 @@ all: earthbound
 %: s.%
 %: SCCS/s.%
 
-CA65FLAGS = -t none --cpu 65816 --bin-include-dir src --include-dir src
+CA65FLAGS = -t none --cpu 65816 --bin-include-dir src --include-dir src --debug-info
 LD65FLAGS = -C snes.cfg
 
 .PHONY: earthbound proto19950327 mother2 depsjp depsusa depsusaproto extract extractproto extractjp
@@ -44,7 +44,7 @@ mother2.sfc: $(patsubst %.asm, %.o, $(JPSRCS))
 	ld65 $(LD65FLAGS) -o "$@" $^
 
 earthbound.sfc: $(patsubst %.asm, %.o, $(USSRCS))
-	ld65 $(LD65FLAGS) -o "$@" $^
+	ld65 $(LD65FLAGS) --dbgfile earthbound.dbg -o "$@" $^
 
 earthbound-1995-03-27.sfc: $(patsubst %.asm, %.o, $(USPROTOSRCS))
 	ld65 $(LD65FLAGS) -o "$@" $^
