@@ -5,23 +5,23 @@
 .ENDMACRO
 
 .MACRO AUDIOPACK file
-    BINARY file
+    BINARY file ; AUDIOPACK
 .ENDMACRO
 
 .MACRO RESERVE_STACK_SPACE size
-    PHD
+    PHD                    ; RESERVE_STACK_SPACE begin
     PHA
     TDC
-    ADC #$FFFF - size + 1
+    ADC #$FFFF - size + 1   
     TCD
-    PLA
+    PLA                    ; RESERVE_STACK_SPACE end
 .ENDMACRO
 
 .MACRO RESERVE_STACK_SPACE_CLOBBER size
-    PHD
+    PHD                    ; RESERVE_STACK_SPACE_CLOBBER begin
     TDC
     ADC #$FFFF - size + 1
-    TCD
+    TCD                    ; RESERVE_STACK_SPACE_CLOBBER end
 .ENDMACRO
 
 .macro PTR3 addr
@@ -44,24 +44,24 @@
 .endmacro
 
 .macro DISPLAY_TEXT_PTR addr
-	LOADPTR addr, $0E
-	JSL DISPLAY_TEXT
+	LOADPTR addr, $0E   ; DISPLAY_TEXT_PTR begin
+	JSL DISPLAY_TEXT    ; DISPLAY_TEXT_PTR end
 .endmacro
 
 .macro DISPLAY_BATTLE_TEXT_PTR addr
-    LOADPTR addr, $0E
-    JSL DISPLAY_IN_BATTLE_TEXT
+    LOADPTR addr, $0E          ; DISPLAY_IN_BATTLE_TEXT_PTR begin
+    JSL DISPLAY_IN_BATTLE_TEXT ; DISPLAY_IN_BATTLE_TEXT_PTR end
 .endmacro
 
 .macro LOADPTR ptr, var
-    LOADINT32 ptr, var
+    LOADINT32 ptr, var   ; LOADPTR .
 .endmacro
 
 .macro LOADINT32 val, var
-    LDA #.LOWORD(val)
-    STA var
-    LDA #.HIWORD(val)
-    STA var+2
+    LDA #.LOWORD(val)    ; LOADINT32 begin
+    STA var              ; LOADINT32
+    LDA #.HIWORD(val)    ; LOADINT32
+    STA var+2            ; LOADINT32 end
 .endmacro
 
 .macro LOADPTRPTR ptr, var
@@ -73,202 +73,202 @@
 
 .ENUM CHAR
     .IF .DEFINED(JPN)
-        SPACE = $20
-        ZERO = $30
+        SPACE = $20  ; CHAR(JPN)
+        ZERO = $30   ; CHAR(JPN)
     .ELSE
-        SPACE = $50
-        ZERO = $60
+        SPACE = $50  ; CHAR(US)
+        ZERO = $60   ; CHAR(US)
     .ENDIF
 .ENDENUM
 
 .macro EBTEXT str
     .repeat .strlen(str), i
         .if .strat(str, i) = ' '
-            .BYTE CHAR::SPACE
+            .BYTE CHAR::SPACE   ; EBTEXT:SPACE
         .elseif .strat(str, i) = '!'
-            .BYTE $51
+            .BYTE $51   ; EBTEXT:!
         .elseif .strat(str, i) = '&'
-            .BYTE $52
+            .BYTE $52   ; EBTEXT:&
         .elseif .strat(str, i) = '{'
-            .BYTE $53
+            .BYTE $53   ; EBTEXT:{
         .elseif .strat(str, i) = '$'
-            .BYTE $54
+            .BYTE $54   ; EBTEXT:$
         .elseif .strat(str, i) = '%'
-            .BYTE $55
+            .BYTE $55   ; EBTEXT:%
         .elseif .strat(str, i) = '}'
-            .BYTE $56
+            .BYTE $56   ; EBTEXT:}
         .elseif .strat(str, i) = $27
-            .BYTE $57
+            .BYTE $57   ; EBTEXT:$27
         .elseif .strat(str, i) = '('
-            .BYTE $58
+            .BYTE $58   ; EBTEXT:(
         .elseif .strat(str, i) = ')'
-            .BYTE $59
+            .BYTE $59   ; EBTEXT:)
         .elseif .strat(str, i) = '*'
-            .BYTE $5A
+            .BYTE $5A   ; EBTEXT:*
         .elseif .strat(str, i) = '+'
-            .BYTE $5B
+            .BYTE $5B   ; EBTEXT:+
         .elseif .strat(str, i) = ','
-            .BYTE $5C
+            .BYTE $5C   ; EBTEXT:,
         .elseif .strat(str, i) = '-'
-            .BYTE $5D
+            .BYTE $5D   ; EBTEXT:-
         .elseif .strat(str, i) = '.'
-            .BYTE $5E
+            .BYTE $5E   ; EBTEXT:.
         .elseif .strat(str, i) = '/'
-            .BYTE $5F
+            .BYTE $5F   ; EBTEXT:/
         .elseif .strat(str, i) = '0'
-            .BYTE CHAR::ZERO
+            .BYTE CHAR::ZERO   ; EBTEXT:ZERO
         .elseif .strat(str, i) = '1'
-            .BYTE $61
+            .BYTE $61   ; EBTEXT:1
         .elseif .strat(str, i) = '2'
-            .BYTE $62
+            .BYTE $62   ; EBTEXT:2
         .elseif .strat(str, i) = '3'
-            .BYTE $63
+            .BYTE $63   ; EBTEXT:3
         .elseif .strat(str, i) = '4'
-            .BYTE $64
+            .BYTE $64   ; EBTEXT:4
         .elseif .strat(str, i) = '5'
-            .BYTE $65
+            .BYTE $65   ; EBTEXT:5
         .elseif .strat(str, i) = '6'
-            .BYTE $66
+            .BYTE $66   ; EBTEXT:6
         .elseif .strat(str, i) = '7'
-            .BYTE $67
+            .BYTE $67   ; EBTEXT:7
         .elseif .strat(str, i) = '8'
-            .BYTE $68
+            .BYTE $68   ; EBTEXT:8
         .elseif .strat(str, i) = '9'
-            .BYTE $69
+            .BYTE $69   ; EBTEXT:9
         .elseif .strat(str, i) = ':'
-            .BYTE $6A
+            .BYTE $6A   ; EBTEXT::
         .elseif .strat(str, i) = ';'
-            .BYTE $6B
+            .BYTE $6B   ; EBTEXT:;
         .elseif .strat(str, i) = '<'
-            .BYTE $6C
+            .BYTE $6C   ; EBTEXT:<
         .elseif .strat(str, i) = '='
-            .BYTE $6D
+            .BYTE $6D   ; EBTEXT:=
         .elseif .strat(str, i) = '>'
-            .BYTE $6E
+            .BYTE $6E   ; EBTEXT:>
         .elseif .strat(str, i) = '?'
-            .BYTE $6F
+            .BYTE $6F   ; EBTEXT:?
         .elseif .strat(str, i) = '@'
-            .BYTE $70
+            .BYTE $70   ; EBTEXT:@
         .elseif .strat(str, i) = 'A'
-            .BYTE $71
+            .BYTE $71   ; EBTEXT:A
         .elseif .strat(str, i) = 'B'
-            .BYTE $72
+            .BYTE $72   ; EBTEXT:B
         .elseif .strat(str, i) = 'C'
-            .BYTE $73
+            .BYTE $73   ; EBTEXT:C
         .elseif .strat(str, i) = 'D'
-            .BYTE $74
+            .BYTE $74   ; EBTEXT:D
         .elseif .strat(str, i) = 'E'
-            .BYTE $75
+            .BYTE $75   ; EBTEXT:E
         .elseif .strat(str, i) = 'F'
-            .BYTE $76
+            .BYTE $76   ; EBTEXT:F
         .elseif .strat(str, i) = 'G'
-            .BYTE $77
+            .BYTE $77   ; EBTEXT:G
         .elseif .strat(str, i) = 'H'
-            .BYTE $78
+            .BYTE $78   ; EBTEXT:H
         .elseif .strat(str, i) = 'I'
-            .BYTE $79
+            .BYTE $79   ; EBTEXT:I
         .elseif .strat(str, i) = 'J'
-            .BYTE $7A
+            .BYTE $7A   ; EBTEXT:J
         .elseif .strat(str, i) = 'K'
-            .BYTE $7B
+            .BYTE $7B   ; EBTEXT:K
         .elseif .strat(str, i) = 'L'
-            .BYTE $7C
+            .BYTE $7C   ; EBTEXT:L
         .elseif .strat(str, i) = 'M'
-            .BYTE $7D
+            .BYTE $7D   ; EBTEXT:M
         .elseif .strat(str, i) = 'N'
-            .BYTE $7E
+            .BYTE $7E   ; EBTEXT:N
         .elseif .strat(str, i) = 'O'
-            .BYTE $7F
+            .BYTE $7F   ; EBTEXT:O
         .elseif .strat(str, i) = 'P'
-            .BYTE $80
+            .BYTE $80   ; EBTEXT:P
         .elseif .strat(str, i) = 'Q'
-            .BYTE $81
+            .BYTE $81   ; EBTEXT:Q
         .elseif .strat(str, i) = 'R'
-            .BYTE $82
+            .BYTE $82   ; EBTEXT:R
         .elseif .strat(str, i) = 'S'
-            .BYTE $83
+            .BYTE $83   ; EBTEXT:S
         .elseif .strat(str, i) = 'T'
-            .BYTE $84
+            .BYTE $84   ; EBTEXT:T
         .elseif .strat(str, i) = 'U'
-            .BYTE $85
+            .BYTE $85   ; EBTEXT:U
         .elseif .strat(str, i) = 'V'
-            .BYTE $86
+            .BYTE $86   ; EBTEXT:V
         .elseif .strat(str, i) = 'W'
-            .BYTE $87
+            .BYTE $87   ; EBTEXT:W
         .elseif .strat(str, i) = 'X'
-            .BYTE $88
+            .BYTE $88   ; EBTEXT:X
         .elseif .strat(str, i) = 'Y'
-            .BYTE $89
+            .BYTE $89   ; EBTEXT:Y
         .elseif .strat(str, i) = 'Z'
-            .BYTE $8A
+            .BYTE $8A   ; EBTEXT:Z
         .elseif .strat(str, i) = '~'
-            .BYTE $8B
+            .BYTE $8B   ; EBTEXT:~
         .elseif .strat(str, i) = '^'
-            .BYTE $8C
+            .BYTE $8C   ; EBTEXT:^
         .elseif .strat(str, i) = '['
-            .BYTE $8D
+            .BYTE $8D   ; EBTEXT:[
         .elseif .strat(str, i) = ']'
-            .BYTE $8E
+            .BYTE $8E   ; EBTEXT:]
         .elseif .strat(str, i) = '#'
-            .BYTE $8F
+            .BYTE $8F   ; EBTEXT:#
         .elseif .strat(str, i) = '_'
-            .BYTE $90
+            .BYTE $90   ; EBTEXT:_
         .elseif .strat(str, i) = 'a'
-            .BYTE $91
+            .BYTE $91   ; EBTEXT:a
         .elseif .strat(str, i) = 'b'
-            .BYTE $92
+            .BYTE $92   ; EBTEXT:b
         .elseif .strat(str, i) = 'c'
-            .BYTE $93
+            .BYTE $93   ; EBTEXT:c
         .elseif .strat(str, i) = 'd'
-            .BYTE $94
+            .BYTE $94   ; EBTEXT:d
         .elseif .strat(str, i) = 'e'
-            .BYTE $95
+            .BYTE $95   ; EBTEXT:e
         .elseif .strat(str, i) = 'f'
-            .BYTE $96
+            .BYTE $96   ; EBTEXT:f
         .elseif .strat(str, i) = 'g'
-            .BYTE $97
+            .BYTE $97   ; EBTEXT:g
         .elseif .strat(str, i) = 'h'
-            .BYTE $98
+            .BYTE $98   ; EBTEXT:h
         .elseif .strat(str, i) = 'i'
-            .BYTE $99
+            .BYTE $99   ; EBTEXT:i
         .elseif .strat(str, i) = 'j'
-            .BYTE $9A
+            .BYTE $9A   ; EBTEXT:j
         .elseif .strat(str, i) = 'k'
-            .BYTE $9B
+            .BYTE $9B   ; EBTEXT:k
         .elseif .strat(str, i) = 'l'
-            .BYTE $9C
+            .BYTE $9C   ; EBTEXT:l
         .elseif .strat(str, i) = 'm'
-            .BYTE $9D
+            .BYTE $9D   ; EBTEXT:m
         .elseif .strat(str, i) = 'n'
-            .BYTE $9E
+            .BYTE $9E   ; EBTEXT:n
         .elseif .strat(str, i) = 'o'
-            .BYTE $9F
+            .BYTE $9F   ; EBTEXT:o
         .elseif .strat(str, i) = 'p'
-            .BYTE $A0
+            .BYTE $A0   ; EBTEXT:p
         .elseif .strat(str, i) = 'q'
-            .BYTE $A1
+            .BYTE $A1   ; EBTEXT:q
         .elseif .strat(str, i) = 'r'
-            .BYTE $A2
+            .BYTE $A2   ; EBTEXT:r
         .elseif .strat(str, i) = 's'
-            .BYTE $A3
+            .BYTE $A3   ; EBTEXT:s
         .elseif .strat(str, i) = 't'
-            .BYTE $A4
+            .BYTE $A4   ; EBTEXT:t
         .elseif .strat(str, i) = 'u'
-            .BYTE $A5
+            .BYTE $A5   ; EBTEXT:u
         .elseif .strat(str, i) = 'v'
-            .BYTE $A6
+            .BYTE $A6   ; EBTEXT:v
         .elseif .strat(str, i) = 'w'
-            .BYTE $A7
+            .BYTE $A7   ; EBTEXT:w
         .elseif .strat(str, i) = 'x'
-            .BYTE $A8
+            .BYTE $A8   ; EBTEXT:x
         .elseif .strat(str, i) = 'y'
-            .BYTE $A9
+            .BYTE $A9   ; EBTEXT:y
         .elseif .strat(str, i) = 'z'
-            .BYTE $AA
+            .BYTE $AA   ; EBTEXT:z
         .elseif .strat(str, i) = '|'
-            .BYTE $AC
+            .BYTE $AC   ; EBTEXT:BAR
         .else
-            .warning .sprintf("Unknown character %c", .strat(str, i))
+            .warning .sprintf("Unknown character %c", .strat(str, i))    ; EBTEXT:WARNING_UNKNOWN
         .endif
     .endrepeat
 .endmacro
@@ -906,12 +906,12 @@
 .ENDMACRO
 
 .MACRO DEREFERENCE_PTR_TO ptr, dest
-    LDY #$0002
+    LDY #$0002    ; DEREFERENCE_PTR_BEGIN
     LDA [ptr],Y
     TAY
     LDA [ptr]
     STA dest
-    STY dest+2
+    STY dest+2    ; DEREFERENCE_PTR_END
 .ENDMACRO
 
 .MACRO COPY_TO_VRAM1 src, dest, size, unk
